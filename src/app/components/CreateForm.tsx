@@ -1,11 +1,4 @@
-import React, {
-    ChangeEventHandler,
-    SyntheticEvent,
-    useContext,
-    useMemo,
-    useRef,
-    useState,
-} from 'react';
+import React, { ChangeEventHandler, SyntheticEvent, useMemo, useRef, useState } from 'react';
 import { FaSpinner } from 'react-icons/fa';
 
 import { Alert, EventTranspose } from '../../interface';

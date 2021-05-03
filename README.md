@@ -1,3 +1,5 @@
 # Indian Vaccine Notifier
 
-A simple PWA which allows you to get notifications based on your alerts.
+A very simple PWA that lets you poll for available slots and send you desktop notifications about it.
+
+<img src="./public/screenshot.png" />
