@@ -1,12 +1,12 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaSync, FaTrash } from 'react-icons/fa';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { FaTrash } from 'react-icons/fa';
 import d from 'dayjs';
 
 import { Alert } from '../../interface';
 import { classNames } from '../util';
 import { useFetchAlertData } from '../hooks/useFetchAlertData';
 import { useAlerts } from '../hooks/useAlerts';
+import { AlertCountdown } from './AlertCountdown';
 
 interface AlertCardProps {
     alert: Alert;
@@ -14,11 +14,9 @@ interface AlertCardProps {
 
 export function AlertCard({ alert }: AlertCardProps) {
     const { remove } = useAlerts();
-    const { loading, getSlots } = useFetchAlertData(alert);
-    const [count, setCounter] = useState(0);
+    const { getSlots } = useFetchAlertData(alert);
     const timeout = useRef<number>();
-    const counter = useRef<number>();
-    const countRef = useRef<number>(0);
+    const firstLoad = useRef(false);
     const numberClass = useMemo(() => {
         const category = alert.category;
 
@@ -43,42 +41,29 @@ export function AlertCard({ alert }: AlertCardProps) {
         }
     };
 
-    const handleRefresh = async (e: React.SyntheticEvent) => {
-        e.stopPropagation();
-        e.preventDefault();
-        getSlots();
-    };
-
     useEffect(() => {
-        getSlots();
-
-        counter.current = window.setInterval(() => {
-            countRef.current += 1;
-            setCounter((countRef.current * 100) / 30);
-        }, 1000);
+        if (!firstLoad.current) {
+            getSlots();
+            firstLoad.current = true;
+        }
 
         timeout.current = window.setInterval(() => {
-            countRef.current = 0;
             getSlots();
-            setCounter(0);
         }, 30000);
 
         return () => {
             window.clearInterval(timeout.current);
-            window.clearInterval(counter.current);
         };
-    }, []);
+    }, [getSlots]);
 
     return (
-        <Link
-            to={`/alerts/${alert.id}`}
+        <div
             className={classNames(
                 'transition-all',
                 'rounded',
                 'bg-gray-800',
-                'hover:bg-gray-700',
                 'overflow-hidden',
-                'border',
+                'border-2',
                 !slotsAvailable && 'border-transparent',
                 slotsAvailable && 'border-green-500'
             )}
@@ -141,7 +126,8 @@ export function AlertCard({ alert }: AlertCardProps) {
                         className={classNames(
                             'rounded-full',
                             'transition',
-                            'bg-gray-600',
+                            'bg-gray-900',
+                            'bg-opacity-30',
                             'mr-2',
                             'flex',
                             'items-center',
@@ -149,7 +135,7 @@ export function AlertCard({ alert }: AlertCardProps) {
                             'w-12',
                             'h-12',
                             'text-sm',
-                            'hover:bg-gray-500',
+                            'hover:bg-red-600',
                             'cursor-pointer'
                         )}
                         title='Delete'
@@ -157,34 +143,9 @@ export function AlertCard({ alert }: AlertCardProps) {
                     >
                         <FaTrash />
                     </div>
-                    <div
-                        className={classNames(
-                            'rounded-full',
-                            'transition',
-                            'bg-blue-600',
-                            'mr-2',
-                            'flex',
-                            'items-center',
-                            'justify-center',
-                            'w-12',
-                            'h-12',
-                            'text-sm',
-                            'hover:bg-blue-500',
-                            'cursor-pointer'
-                        )}
-                        onClick={handleRefresh}
-                        title='Refresh'
-                    >
-                        <FaSync className={classNames(loading && 'animate-spin')} />
-                    </div>
                 </div>
-                <div className='absolute h-2 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-60'>
-                    <div
-                        className='h-full transition-all bg-green-500'
-                        style={{ width: `${count}%` }}
-                    />
-                </div>
+                <AlertCountdown />
             </div>
-        </Link>
+        </div>
     );
 }
