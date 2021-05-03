@@ -7,7 +7,10 @@ html,
 #root {
     font-family: 'Mukta', sans-serif;
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
     @apply bg-gray-900 text-white text-base;
 }
 
@@ -15,6 +18,7 @@ html,
     box-sizing: border-box;
 }
 
-input {
-    @apply rounded p-2 bg-gray-800 bg-opacity-40 border border-gray-800 my-2 text-white outline-none w-full;
+input,
+select {
+    @apply text-base rounded p-2 bg-gray-800 bg-opacity-100 border border-gray-800 my-2 text-white outline-none w-full;
 }

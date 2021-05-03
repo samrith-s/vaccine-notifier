@@ -8,9 +8,9 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
     return (
-        <>
-            <header className='top-0 left-auto flex-shrink-0 bg-gray-800 bg-opacity-40'>
-                <div className='container mx-auto flex p-4 items-center'>
+        <div className='grid h-full' style={{ gridTemplateRows: 'max-content auto' }}>
+            <header>
+                <div className='container mx-auto flex p-4 items-center min-h-full'>
                     <Link
                         to='/'
                         className='mr-auto text-green-300 hover:text-green-500 font-bold text-2xl transition'
@@ -38,9 +38,11 @@ export default function Layout({ children }: LayoutProps) {
                     </nav>
                 </div>
             </header>
-            <main>
-                <div className='container mx-auto p-4'>{children}</div>
+            <main className='overflow-x-hidden p-4 pt-0 overflow-y-auto min-h-full'>
+                <div className='grid grid-cols-12 gap-4 container mx-auto min-h-full'>
+                    {children}
+                </div>
             </main>
-        </>
+        </div>
     );
 }
