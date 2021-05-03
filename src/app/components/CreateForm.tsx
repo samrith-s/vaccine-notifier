@@ -165,7 +165,16 @@ export function CreateForm() {
             </div>
             <div className='mt-5 text-sm text-gray-500'>
                 This site does not store any data on the internet. It only uses the internet to
-                fetch data from the government's Cowin API.
+                fetch data from the government's Cowin API. Contact{' '}
+                <a
+                    className='border-b border-dotted border-green-700 text-green-700'
+                    href='mailto:hello@vaccinefinder.in'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                >
+                    contact@vaccinefinder.in
+                </a>{' '}
+                for more information.
             </div>
         </>
     );

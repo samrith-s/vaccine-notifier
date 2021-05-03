@@ -35,7 +35,7 @@ export function AlertsProvider({ children }: AlertsProviderProps) {
 
             if (!(window as any).__UNAVAILABLE) {
                 new Notification('Vaccine Notifier', {
-                    body: `${alert.name} alert for the ${alert.category}+ in ${alert.district.district_name}, ${alert.state.state_name} added successfully!\nRemember to keep the window open to continue receiving notifications.`,
+                    body: `"${alert.name}" alert for ${alert.category}+ in ${alert.district.district_name}, ${alert.state.state_name} added successfully!\nRemember to keep the window open to continue receiving notifications.`,
                 });
             }
 
