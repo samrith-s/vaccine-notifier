@@ -1,8 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import 'react-circular-progressbar/dist/styles.css';
-
 import { AlertsProvider } from './alerts/AlertsProvider';
 import Layout from './components/Layout';
 import Home from './pages/Home';
@@ -16,7 +14,6 @@ if (!('Notification' in window) || Notification.permission === 'denied') {
             new Notification('Vaccine Notifier', {
                 body:
                     'You have successfully enabled notifications! Please keep this window open to be notified whenever slots based on your alerts are available.',
-                badge: '🇮🇳',
             });
         }
     });
