@@ -56,6 +56,17 @@ export function AlertCard({ alert }: AlertCardProps) {
         };
     }, [getSlots]);
 
+    useEffect(() => {
+        if (!(window as any).__UNAVAILABLE && alert.shouldNotify) {
+            const notification = new Notification('Vaccine Notifier', {
+                body: `There are vaccines available in ${alert.district.district_name}, ${alert.state.state_name}! Head to Cowin portal to book.`,
+            });
+            notification.onclick = () => {
+                window.focus();
+            };
+        }
+    }, [alert.shouldNotify, alert.district.district_name, alert.state.state_name]);
+
     return (
         <div
             className={classNames(

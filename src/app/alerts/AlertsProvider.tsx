@@ -17,6 +17,8 @@ export function AlertsProvider({ children }: AlertsProviderProps) {
 
     const hasAlerts = useMemo(() => !!alerts.length, [alerts]);
 
+    const slotsAvailable = useMemo(() => alerts.some((alert) => alert.slots.length), [alerts]);
+
     const add = useCallback(
         (alert: Pick<Alert, 'name' | 'category' | 'state' | 'district'>) => {
             const newAlerts: Alert[] = [
@@ -25,10 +27,17 @@ export function AlertsProvider({ children }: AlertsProviderProps) {
                     id: Date.now(),
                     ...alert,
                     slots: [],
+                    shouldNotify: false,
                 },
             ];
 
             setAlerts(newAlerts);
+
+            if (!(window as any).__UNAVAILABLE) {
+                new Notification('Vaccine Notifier', {
+                    body: `${alert.name} alert for the ${alert.category}+ in ${alert.district.district_name}, ${alert.state.state_name} added successfully!\nRemember to keep the window open to continue receiving notifications.`,
+                });
+            }
 
             window.localStorage.setItem(KEY, JSON.stringify(newAlerts));
         },
@@ -80,6 +89,7 @@ export function AlertsProvider({ children }: AlertsProviderProps) {
 
     const contextData = useMemo(
         () => ({
+            slotsAvailable,
             alerts,
             hasAlerts,
             add,
@@ -87,7 +97,7 @@ export function AlertsProvider({ children }: AlertsProviderProps) {
             remove,
             clear,
         }),
-        [alerts, hasAlerts, add, update, remove, clear]
+        [slotsAvailable, alerts, hasAlerts, add, update, remove, clear]
     );
 
     return <AlertsContext.Provider value={contextData}>{children}</AlertsContext.Provider>;

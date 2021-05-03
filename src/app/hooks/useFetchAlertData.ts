@@ -18,8 +18,10 @@ export function useFetchAlertData(alert: Alert) {
             const response = await get(
                 `calendarByDistrict?district_id=${alert.district.district_id}&date=${date}`
             );
+            const slots = filterSlots(alert, response);
             update(alert.id, {
-                slots: filterSlots(alert, response),
+                slots,
+                shouldNotify: alert.slots.length !== slots.length,
             });
         } catch (error) {
             console.error(error);

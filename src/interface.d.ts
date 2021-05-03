@@ -44,6 +44,7 @@ export interface Alert {
     state: State;
     district: District;
     slots: Center[];
+    shouldNotify: boolean;
 }
 
 export interface Session {

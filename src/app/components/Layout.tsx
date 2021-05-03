@@ -2,6 +2,8 @@ import React from 'react';
 import { FaExclamationCircle, FaGithub } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
+import India from '../../assets/india.svg';
+
 interface LayoutProps {
     children?: React.ReactNode;
 }
@@ -15,7 +17,10 @@ export default function Layout({ children }: LayoutProps) {
                         to='/'
                         className='mr-auto text-green-300 hover:text-green-500 font-bold text-2xl transition'
                     >
-                        <h1 className='m-0'>🇮🇳 Vaccine Notifier</h1>
+                        <h1 className='m-0'>
+                            <img src={India} alt='indian flag' width='30' className='inline mr-2' />{' '}
+                            Vaccine Notifier
+                        </h1>
                     </Link>
                     <nav className='flex'>
                         <a
