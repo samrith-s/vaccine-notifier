@@ -1,43 +1,118 @@
-import React, { useMemo } from 'react';
-import d from 'dayjs';
-import { FaSync, FaTrash } from 'react-icons/fa';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FaSync, FaTrash } from 'react-icons/fa';
+import d from 'dayjs';
 
 import { Alert } from '../../interface';
 import { classNames } from '../util';
+import { useFetchAlertData } from '../hooks/useFetchAlertData';
+import { useAlerts } from '../hooks/useAlerts';
 
 interface AlertCardProps {
     alert: Alert;
 }
 
 export function AlertCard({ alert }: AlertCardProps) {
+    const { remove } = useAlerts();
+    const { loading, getSlots } = useFetchAlertData(alert);
+    const [count, setCounter] = useState(0);
+    const timeout = useRef<number>();
+    const counter = useRef<number>();
+    const countRef = useRef<number>(0);
     const numberClass = useMemo(() => {
         const category = alert.category;
 
         if (category === 80) {
-            return 'bg-red-600';
+            return 'text-red-600';
         }
 
         if (category === 45) {
-            return 'bg-yellow-600';
+            return 'text-yellow-600';
         }
 
-        return 'bg-green-600';
+        return 'text-green-600';
     }, [alert.category]);
+
+    const slotsAvailable = useMemo(() => !!alert.slots.length, [alert.slots]);
+
+    const handleRemove = (e: React.SyntheticEvent) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.confirm('Are you sure you want to remove this alert?')) {
+            remove(alert.id);
+        }
+    };
+
+    const handleRefresh = async (e: React.SyntheticEvent) => {
+        e.stopPropagation();
+        e.preventDefault();
+        getSlots();
+    };
+
+    useEffect(() => {
+        getSlots();
+
+        counter.current = window.setInterval(() => {
+            countRef.current += 1;
+            setCounter((countRef.current * 100) / 30);
+        }, 1000);
+
+        timeout.current = window.setInterval(() => {
+            countRef.current = 0;
+            getSlots();
+            setCounter(0);
+        }, 30000);
+
+        return () => {
+            window.clearInterval(timeout.current);
+            window.clearInterval(counter.current);
+        };
+    }, []);
 
     return (
         <Link
             to={`/alerts/${alert.id}`}
-            className='transition rounded p-4 bg-gray-800 hover:bg-gray-700'
+            className={classNames(
+                'transition-all',
+                'rounded',
+                'bg-gray-800',
+                'hover:bg-gray-700',
+                'overflow-hidden',
+                'border',
+                !slotsAvailable && 'border-transparent',
+                slotsAvailable && 'border-green-500'
+            )}
         >
             <div
-                className='grid items-center'
+                className='grid items-center relative p-4'
                 style={{ gridTemplateColumns: 'max-content auto max-content' }}
             >
+                <span
+                    className={classNames(
+                        'absolute',
+                        'left-2/4',
+                        'top-0',
+                        'px-1.5',
+                        'bg-green-500',
+                        'text-sm',
+                        'rounded-br',
+                        'rounded-bl',
+                        'transform',
+                        '-translate-x-2/4',
+                        'shadow-lg',
+                        'uppercase',
+                        'transition-all',
+                        !slotsAvailable && 'opacity-0',
+                        slotsAvailable && 'opacity-100'
+                    )}
+                >
+                    Available
+                </span>
                 <div
                     className={classNames(
                         'rounded',
-                        'text-white',
+                        'bg-gray-900',
+                        'bg-opacity-50',
                         'text-lg',
                         'text-bold',
                         'mr-4',
@@ -74,9 +149,11 @@ export function AlertCard({ alert }: AlertCardProps) {
                             'w-12',
                             'h-12',
                             'text-sm',
-                            'hover:bg-gray-500'
+                            'hover:bg-gray-500',
+                            'cursor-pointer'
                         )}
                         title='Delete'
+                        onClick={handleRemove}
                     >
                         <FaTrash />
                     </div>
@@ -92,12 +169,20 @@ export function AlertCard({ alert }: AlertCardProps) {
                             'w-12',
                             'h-12',
                             'text-sm',
-                            'hover:bg-blue-500'
+                            'hover:bg-blue-500',
+                            'cursor-pointer'
                         )}
+                        onClick={handleRefresh}
                         title='Refresh'
                     >
-                        <FaSync />
+                        <FaSync className={classNames(loading && 'animate-spin')} />
                     </div>
+                </div>
+                <div className='absolute h-2 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-60'>
+                    <div
+                        className='h-full transition-all bg-green-500'
+                        style={{ width: `${count}%` }}
+                    />
                 </div>
             </div>
         </Link>

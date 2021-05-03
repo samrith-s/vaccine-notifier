@@ -5,8 +5,8 @@ import { District, DistrictData, State, StateData } from '../../interface';
 import { useCustomSwr } from './useCustomSwr';
 
 export function useLocationSelection() {
-    const [currentState, setCurrentState] = useState<State>();
-    const [currentDistrict, setCurrentDistrict] = useState<District>();
+    const [currentState, setCurrentState] = useState<State | null>(null);
+    const [currentDistrict, setCurrentDistrict] = useState<District | null>(null);
 
     const {
         data: statesData,
@@ -34,7 +34,7 @@ export function useLocationSelection() {
             const selectedState = states?.find(
                 (state) => state.state_id === parseInt(e.target.value, 10)
             );
-            setCurrentState(selectedState);
+            setCurrentState(selectedState || null);
         },
         [setCurrentState, states]
     );
@@ -44,14 +44,14 @@ export function useLocationSelection() {
             const selectedDistrict = districts?.find(
                 (district) => district.district_id === parseInt(e.target.value, 10)
             );
-            setCurrentDistrict(selectedDistrict);
+            setCurrentDistrict(selectedDistrict || null);
         },
         [setCurrentDistrict, districts]
     );
 
     const reset = useCallback(() => {
-        setCurrentState(undefined);
-        setCurrentDistrict(undefined);
+        setCurrentState(null);
+        setCurrentDistrict(null);
     }, [setCurrentState, setCurrentDistrict]);
 
     return {

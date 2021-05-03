@@ -1,18 +1,16 @@
 import React from 'react';
 
-import { Alert } from '../../interface';
 import { AlertCard } from '../components/AlertCard';
+import { useAlerts } from '../hooks/useAlerts';
 
-interface AlertsProps {
-    alerts: Alert[];
-}
+export function Alerts() {
+    const { alerts } = useAlerts();
 
-export default function Alerts({ alerts }: AlertsProps) {
     return (
         <div className='grid auto-rows-max gap-4'>
-            <h1 className='text-xl font-bold text-green-500'>My Alerts</h1>
-            {alerts.map((alert) => (
-                <AlertCard key={alert.id} alert={alert} />
+            <h1 className='text-xl font-bold text-green-500'>My Alerts ({alerts?.length})</h1>
+            {alerts.map((alert, index) => (
+                <AlertCard key={index} alert={alert} />
             ))}
         </div>
     );

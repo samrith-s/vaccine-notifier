@@ -43,7 +43,7 @@ export interface Alert {
     category: number;
     state: State;
     district: District;
-    slots: Slots[];
+    slots: Center[];
 }
 
 export interface Session {
@@ -68,6 +68,10 @@ export interface Center {
     to: string;
     fee_type: string;
     sessions: Session[];
+}
+
+export interface CenterData {
+    centers: Center[];
 }
 
 export type EventTranspose<Target = any, FormData = Record<string, string>> = Target &
