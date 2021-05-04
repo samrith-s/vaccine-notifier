@@ -21,8 +21,8 @@ export function AlertsProvider({ children }: AlertsProviderProps) {
 
     useEffect(() => {
         const listener = (event: any) => {
-            const key = event.data.key as AlertWorkerMethods;
-            const data = event.data.data;
+            const key = event.key as AlertWorkerMethods;
+            const data = event.data;
 
             switch (key) {
                 case 'alerts::init':

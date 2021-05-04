@@ -3,26 +3,25 @@ import { Alert, AlertMethods, AlertWorkerMethods, Center, CenterData } from '../
 declare const self: ServiceWorkerGlobalScope;
 
 export function AlertHandler<TData = any>(
+    event: ExtendableMessageEvent,
     key: AlertMethods,
     callback: (action: AlertWorkerMethods, data: TData) => void
 ) {
-    self.addEventListener('message', async (event) => {
-        if (Array.isArray(event.data)) {
-            const [message, data] = event.data;
+    if (Array.isArray(event.data)) {
+        const [message, data] = event.data;
 
-            const newKey = `alerts::${key}` as AlertWorkerMethods;
+        const newKey = `alerts::${key}` as AlertWorkerMethods;
 
-            if (message === newKey) {
-                try {
-                    callback?.(newKey, data as TData);
-                } catch (e) {
-                    console.error(e);
-                }
+        if (message === newKey) {
+            try {
+                callback?.(newKey, data as TData);
+            } catch (e) {
+                console.error(e);
             }
         }
+    }
 
-        return true;
-    });
+    return true;
 }
 
 export function Notify(body: string) {

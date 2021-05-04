@@ -6,16 +6,15 @@ export function AlertCountdown() {
     const [counter, setCounter] = useState(0);
 
     useEffect(() => {
-        const listener = (event: any) => {
-            const count = event.data ?? 0;
+        const listener = (count: any) => {
             setCounter(count);
             return true;
         };
 
-        CounterChannel.addEventListener('message', listener, true);
+        CounterChannel.addEventListener('message', listener);
 
         return () => {
-            CounterChannel.removeEventListener('message', listener, true);
+            CounterChannel.removeEventListener('message', listener);
         };
     });
 

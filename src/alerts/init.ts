@@ -10,34 +10,42 @@ import { SendData } from './messaging';
 setup.localforageSetup();
 setup.setupNotifications();
 
-AlertHandler('init', async () => {
-    await PollAlert();
-});
+declare const self: ServiceWorkerGlobalScope;
 
-AlertHandler<Pick<Alert, 'name' | 'category' | 'state' | 'district'>>('add', async (key, data) => {
-    const newAlert = {
-        ...data,
-        id: Date.now(),
-        slots: [],
-        shouldNotify: false,
-    };
+self.addEventListener('message', async (event) => {
+    AlertHandler(event, 'init', async () => {
+        await PollAlert();
+    });
 
-    await setAlert(newAlert);
-    await fetchAlert(newAlert);
+    AlertHandler<Pick<Alert, 'name' | 'category' | 'state' | 'district'>>(
+        event,
+        'add',
+        async (key, data) => {
+            const newAlert = {
+                ...data,
+                id: Date.now(),
+                slots: [],
+                shouldNotify: false,
+            };
 
-    SendData(key, newAlert);
+            await setAlert(newAlert);
+            await fetchAlert(newAlert);
 
-    Notify(
-        `"${data.name}" alert for ${data.category}+ in ${data.district.district_name}, ${data.state.state_name} added successfully!`
+            SendData(key, newAlert);
+
+            Notify(
+                `"${data.name}" alert for ${data.category}+ in ${data.district.district_name}, ${data.state.state_name} added successfully!`
+            );
+        }
     );
-});
 
-AlertHandler<number>('remove', async (key, data) => {
-    await removeAlert(data);
-    SendData(key, data);
-});
+    AlertHandler<number>(event, 'remove', async (key, data) => {
+        await removeAlert(data);
+        SendData(key, data);
+    });
 
-AlertHandler('clear', async (key, data) => {
-    await clearAlerts();
-    SendData(key, data);
+    AlertHandler(event, 'clear', async (key, data) => {
+        await clearAlerts();
+        SendData(key, data);
+    });
 });
