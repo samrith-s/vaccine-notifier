@@ -1,22 +1,17 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import d from 'dayjs';
 
 import { Alert } from '../../interface';
 import { classNames } from '../util';
-import { useFetchAlertData } from '../hooks/useFetchAlertData';
-import { useAlerts } from '../hooks/useAlerts';
-import { AlertCountdown } from './AlertCountdown';
+import { useAlertWorker } from '../hooks/useAlertWorker';
 
 interface AlertCardProps {
     alert: Alert;
 }
 
 export function AlertCard({ alert }: AlertCardProps) {
-    const { remove } = useAlerts();
-    const { getSlots } = useFetchAlertData(alert);
-    const timeout = useRef<number>();
-    const firstLoad = useRef(false);
+    const { remove } = useAlertWorker();
     const numberClass = useMemo(() => {
         const category = alert.category;
 
@@ -40,32 +35,6 @@ export function AlertCard({ alert }: AlertCardProps) {
             remove(alert.id);
         }
     };
-
-    useEffect(() => {
-        if (!firstLoad.current) {
-            getSlots();
-            firstLoad.current = true;
-        }
-
-        timeout.current = window.setInterval(() => {
-            getSlots();
-        }, 30000);
-
-        return () => {
-            window.clearInterval(timeout.current);
-        };
-    }, [getSlots]);
-
-    useEffect(() => {
-        if (!(window as any).__UNAVAILABLE && alert.shouldNotify) {
-            const notification = new Notification('Vaccine Notifier', {
-                body: `There are vaccines available in ${alert.district.district_name}, ${alert.state.state_name}! Head to Cowin portal to book.`,
-            });
-            notification.onclick = () => {
-                window.focus();
-            };
-        }
-    }, [alert.shouldNotify, alert.district.district_name, alert.state.state_name]);
 
     return (
         <div
@@ -155,7 +124,6 @@ export function AlertCard({ alert }: AlertCardProps) {
                         <FaTrash />
                     </div>
                 </div>
-                <AlertCountdown />
             </div>
         </div>
     );

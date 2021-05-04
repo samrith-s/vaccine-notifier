@@ -47,6 +47,9 @@ export interface Alert {
     shouldNotify: boolean;
 }
 
+export type AlertMethods = 'init' | 'add' | 'remove' | 'update' | 'clear' | 'poll';
+export type AlertWorkerMethods = `alerts::${AlertMethods}`;
+
 export interface Session {
     session_id: string;
     date: string;

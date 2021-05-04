@@ -2,11 +2,12 @@ import React, { ChangeEventHandler, SyntheticEvent, useMemo, useRef, useState } 
 import { FaSpinner } from 'react-icons/fa';
 
 import { Alert, EventTranspose } from '../../interface';
-import { useAlerts } from '../hooks/useAlerts';
+// import { useAlerts } from '../hooks/useAlerts';
+import { useAlertWorker } from '../hooks/useAlertWorker';
 import { useLocationSelection } from '../hooks/useLocationSelection';
 
 export function CreateForm() {
-    const { add } = useAlerts();
+    const { add } = useAlertWorker();
     const {
         states,
         districts,

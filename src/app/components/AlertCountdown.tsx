@@ -1,34 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { CHANNEL_COUNTER } from '../../constants';
+
+const channel = new BroadcastChannel(CHANNEL_COUNTER);
 
 export function AlertCountdown() {
-    const [count, setCounter] = useState(0);
-    const counter = useRef<number>();
-    const countRef = useRef(0);
+    const [counter, setCounter] = useState(0);
 
     useEffect(() => {
-        counter.current = window.setInterval(() => {
-            countRef.current += 1;
+        const listener = (event: any) => {
+            const count = event.data ?? 0;
+            setCounter(count);
+            return true;
+        };
 
-            if (countRef.current > 30) {
-                setCounter(0);
-                countRef.current = 0;
-                return;
-            }
-
-            setCounter((countRef.current * 100) / 30);
-        }, 1000);
+        channel.addEventListener('message', listener);
 
         return () => {
-            window.clearInterval(counter.current);
+            channel.removeEventListener('message', listener);
         };
     });
 
     return (
-        <div className='absolute h-2 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-60'>
-            <div
-                className='h-full transition-all bg-green-200 bg-opacity-20'
-                style={{ width: `${count}%` }}
-            />
+        <div className='text-gray-500 mb-5'>
+            Refreshing {counter > 1 ? `in ${15 - counter} seconds` : 'now'}..
         </div>
     );
 }

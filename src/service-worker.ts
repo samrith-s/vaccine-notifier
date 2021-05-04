@@ -10,9 +10,11 @@
 
 import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
-import { createHandlerBoundToURL, precacheAndRoute } from 'workbox-precaching';
+import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
+
+import './alerts/init';
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -78,3 +80,15 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
+
+// self.addEventListener("activate", async (event) => {
+//     const client = await self.clients.get(event.);
+//     function repeatCall() {
+//         setTimeout(() => {
+//             console.log('REFETCH!');
+//             repeatCall();
+//         }, 30000);
+//     }
+
+//     repeatCall();
+// })

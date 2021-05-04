@@ -2,18 +2,23 @@ import React from 'react';
 import { FaSyringe } from 'react-icons/fa';
 
 import { AlertCard } from '../components/AlertCard';
+import { AlertCountdown } from '../components/AlertCountdown';
 import { useAlerts } from '../hooks/useAlerts';
 import { classNames } from '../util';
 
 export function Alerts() {
-    const { hasAlerts, alerts, slotsAvailable } = useAlerts();
+    const { alerts, slotsAvailable, hasAlerts } = useAlerts();
 
     return (
         <div className='grid auto-rows-max gap-4'>
-            <div className='flex'>
-                <h1 className='text-xl font-bold text-green-500 w-full mr-5'>
-                    My Alerts ({alerts?.length})
-                </h1>
+            <div className='flex items-center'>
+                <div className='mr-5 w-full'>
+                    <h1 className='text-xl font-bold text-green-500'>
+                        My Alerts ({alerts?.length})
+                    </h1>
+                    <AlertCountdown />
+                </div>
+
                 <a
                     href='https://selfregistration.cowin.gov.in/'
                     target='_blank'

@@ -10,12 +10,7 @@
         {
             "src": "india.png",
             "type": "image/png",
-            "sizes": "192x192"
-        },
-        {
-            "src": "india.png",
-            "type": "image/png",
-            "sizes": "512x512"
+            "sizes": "128x128 512*512"
         }
     ],
     "start_url": ".",

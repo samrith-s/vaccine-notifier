@@ -12,7 +12,7 @@ export default function Layout({ children }: LayoutProps) {
     return (
         <div className='grid h-full' style={{ gridTemplateRows: 'max-content max-content auto' }}>
             <header>
-                <div className='container mx-auto flex p-4 items-center min-h-full'>
+                <div className='container mx-auto flex p-4 items-center'>
                     <Link
                         to='/'
                         className='mr-auto text-green-300 hover:text-green-500 font-bold text-2xl transition'
