@@ -151,11 +151,8 @@ export function CreateForm() {
                 </button>
             </form>
             <div className='mt-5 text-sm text-gray-400'>
-                Instructions:
-                <ul>
-                    <li>- Allow notifications from this site</li>
-                    <li>- Keep this website running in a new tab</li>
-                </ul>
+                You need to <strong>allow notifications from this site</strong> in order to receive
+                desktop notifications.
             </div>
             <div className='mt-5 text-sm text-gray-500'>
                 This site does not store any data on the internet. It only uses the internet to
