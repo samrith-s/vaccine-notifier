@@ -7,6 +7,7 @@ import { PollAlert } from './poll';
 import { clearAlerts, removeAlert, setAlert } from './storage';
 import { SendData } from './messaging';
 
+setup.localforageSetup();
 setup.setupNotifications();
 
 AlertHandler('init', async () => {

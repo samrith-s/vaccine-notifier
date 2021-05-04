@@ -1,3 +1,5 @@
+import { config } from 'localforage';
+
 declare const self: ServiceWorkerGlobalScope;
 
 export function setupNotifications() {
@@ -12,5 +14,11 @@ export function setupNotifications() {
                 }
             })
         );
+    });
+}
+
+export function localforageSetup() {
+    config({
+        name: 'vn_data_store',
     });
 }
