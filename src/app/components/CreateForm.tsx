@@ -73,7 +73,7 @@ export function CreateForm() {
     return (
         <>
             <form
-                className='rounded col-span-12 bg-gray-800 bg-opacity-50 p-4 sm:col-span-4'
+                className='relative rounded col-span-12 bg-gray-800 bg-opacity-50 p-4 sm:col-span-4'
                 onSubmit={handleSubmit}
                 ref={formRef}
             >

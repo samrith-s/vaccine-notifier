@@ -44,8 +44,8 @@ export function AlertCard({ alert }: AlertCardProps) {
                 'bg-gray-800',
                 'overflow-hidden',
                 'border-2',
-                !slotsAvailable && 'border-transparent',
-                slotsAvailable && 'border-green-500'
+                !slotsAvailable && 'border-gray-700',
+                slotsAvailable && 'border-green-600'
             )}
         >
             <div
@@ -58,7 +58,6 @@ export function AlertCard({ alert }: AlertCardProps) {
                         'left-2/4',
                         'top-0',
                         'px-1.5',
-                        'bg-green-500',
                         'text-sm',
                         'rounded-br',
                         'rounded-bl',
@@ -67,11 +66,11 @@ export function AlertCard({ alert }: AlertCardProps) {
                         'shadow-lg',
                         'uppercase',
                         'transition-all',
-                        !slotsAvailable && 'opacity-0',
-                        slotsAvailable && 'opacity-100'
+                        slotsAvailable && 'bg-green-600',
+                        !slotsAvailable && 'bg-gray-700 text-gray-400'
                     )}
                 >
-                    Available
+                    {slotsAvailable ? 'Available' : 'Unavailable'}
                 </span>
                 <div
                     className={classNames(
