@@ -34,15 +34,19 @@ export function AlertsProvider({ children }: AlertsProviderProps) {
                 }
 
                 case 'alerts::add': {
-                    console.log(alerts, data);
                     setAlerts([...alerts, data as Alert]);
                     break;
                 }
 
                 case 'alerts::remove': {
-                    const newAlerts = [...alerts];
-                    newAlerts.splice(data, 1);
-                    setAlerts(newAlerts);
+                    const index = alerts.findIndex((alert) => alert.id === data);
+
+                    if (index > -1) {
+                        const newAlerts = [...alerts];
+                        newAlerts.splice(index, 1);
+                        setAlerts(newAlerts);
+                    }
+
                     break;
                 }
 
