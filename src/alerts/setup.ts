@@ -1,4 +1,4 @@
-import { config } from 'localforage';
+import storage from 'localforage';
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -18,7 +18,7 @@ export function setupNotifications() {
 }
 
 export function localforageSetup() {
-    config({
+    storage.config({
         name: 'vn_data_store',
     });
 }
