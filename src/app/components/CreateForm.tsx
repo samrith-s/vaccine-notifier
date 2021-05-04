@@ -159,11 +159,11 @@ export function CreateForm() {
                 fetch data from the government's Cowin API. Contact{' '}
                 <a
                     className='border-b border-dotted border-green-700 text-green-700'
-                    href='mailto:hello@vaccinefinder.in'
+                    href='mailto:hello@vaccinenotifier.in'
                     target='_blank'
                     rel='noopener noreferrer'
                 >
-                    contact@vaccinefinder.in
+                    contact@vaccinenotifier.in
                 </a>{' '}
                 for more information.
             </div>
