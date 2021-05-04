@@ -20,7 +20,7 @@ export function AlertCountdown() {
 
     return (
         <div className='text-gray-500'>
-            Refreshing {counter > 1 ? `in ${15 - counter} seconds` : 'now'}..
+            Refreshing {counter > 0 ? `in ${counter} seconds` : 'now'}..
         </div>
     );
 }

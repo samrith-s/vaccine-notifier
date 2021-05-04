@@ -2,7 +2,7 @@ import { Alert } from '../../interface';
 
 export function useAlertWorker() {
     const init = () => {
-        navigator.serviceWorker.controller?.postMessage(['alerts::init']);
+        navigator.serviceWorker.controller?.postMessage(['alerts::poll']);
     };
 
     const add = (alert: Pick<Alert, 'name' | 'category' | 'state' | 'district'>) => {

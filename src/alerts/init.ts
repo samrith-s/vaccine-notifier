@@ -13,7 +13,7 @@ setup.setupNotifications();
 declare const self: ServiceWorkerGlobalScope;
 
 self.addEventListener('message', async (event) => {
-    AlertHandler(event, 'init', async () => {
+    AlertHandler(event, 'poll', async () => {
         await PollAlert();
     });
 
