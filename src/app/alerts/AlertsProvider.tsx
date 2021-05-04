@@ -18,6 +18,7 @@ export function AlertsProvider({ children }: AlertsProviderProps) {
 
     useEffect(() => {
         init();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
