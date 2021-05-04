@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { CHANNEL_COUNTER } from '../../constants';
-
-const channel = new BroadcastChannel(CHANNEL_COUNTER);
+import { CounterChannel } from '../../alerts/channels';
 
 export function AlertCountdown() {
     const [counter, setCounter] = useState(0);
@@ -14,15 +12,15 @@ export function AlertCountdown() {
             return true;
         };
 
-        channel.addEventListener('message', listener);
+        CounterChannel.addEventListener('message', listener, true);
 
         return () => {
-            channel.removeEventListener('message', listener);
+            CounterChannel.removeEventListener('message', listener, true);
         };
     });
 
     return (
-        <div className='text-gray-500 mb-5'>
+        <div className='text-gray-500'>
             Refreshing {counter > 1 ? `in ${15 - counter} seconds` : 'now'}..
         </div>
     );

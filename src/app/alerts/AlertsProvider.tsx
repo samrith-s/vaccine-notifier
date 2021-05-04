@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { DataChannel } from '../../alerts/channels';
 
-import { CHANNEL } from '../../constants';
 import { Alert, AlertWorkerMethods } from '../../interface';
 import { useAlertWorker } from '../hooks/useAlertWorker';
 
@@ -9,8 +9,6 @@ import { AlertsContext } from './Alerts.context';
 interface AlertsProviderProps {
     children?: React.ReactNode;
 }
-
-const bc = new BroadcastChannel(CHANNEL);
 
 export function AlertsProvider({ children }: AlertsProviderProps) {
     const { init } = useAlertWorker();
@@ -63,10 +61,10 @@ export function AlertsProvider({ children }: AlertsProviderProps) {
             return true;
         };
 
-        bc.addEventListener('message', listener);
+        DataChannel.addEventListener('message', listener);
 
         return () => {
-            bc.removeEventListener('message', listener);
+            DataChannel.removeEventListener('message', listener);
         };
     });
 

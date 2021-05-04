@@ -1,13 +1,10 @@
-import { CHANNEL } from '../constants';
 import { Alert, AlertMethods, AlertWorkerMethods, Center, CenterData } from '../interface';
 
 declare const self: ServiceWorkerGlobalScope;
 
-const channel = new BroadcastChannel(CHANNEL);
-
 export function AlertHandler<TData = any>(
     key: AlertMethods,
-    callback: (action: AlertWorkerMethods, data: TData, client: BroadcastChannel) => void
+    callback: (action: AlertWorkerMethods, data: TData) => void
 ) {
     self.addEventListener('message', async (event) => {
         if (Array.isArray(event.data)) {
@@ -17,7 +14,7 @@ export function AlertHandler<TData = any>(
 
             if (message === newKey) {
                 try {
-                    callback?.(newKey, data as TData, channel);
+                    callback?.(newKey, data as TData);
                 } catch (e) {
                     console.error(e);
                 }

@@ -1,8 +1,6 @@
-import { CHANNEL, CHANNEL_COUNTER } from '../constants';
 import { AlertWorkerMethods } from '../interface';
 
-const DataChannel = new BroadcastChannel(CHANNEL);
-const CounterChannel = new BroadcastChannel(CHANNEL_COUNTER);
+import { CounterChannel, DataChannel } from './channels';
 
 export function SendData<T = any>(key: AlertWorkerMethods, data: T) {
     DataChannel.postMessage({ key, data });
