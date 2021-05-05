@@ -1,10 +1,10 @@
 import React from 'react';
-import { FaSyringe } from 'react-icons/fa';
+import { FaSync, FaSyringe } from 'react-icons/fa';
 
 import { AlertCard } from '../components/AlertCard';
 import { AlertCountdown } from '../components/AlertCountdown';
+import { Button } from '../components/Button';
 import { useAlerts } from '../hooks/useAlerts';
-import { classNames } from '../util';
 
 export function Alerts() {
     const { alerts, slotsAvailable, hasAlerts } = useAlerts();
@@ -19,25 +19,22 @@ export function Alerts() {
                     <AlertCountdown />
                 </div>
 
-                <a
-                    href='https://selfregistration.cowin.gov.in/'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className={classNames(
-                        'flex',
-                        'items-center',
-                        'rounded',
-                        'transition-all',
-                        'px-4',
-                        'py-2',
-                        'flex-shrink-0',
-                        'text-white',
-                        slotsAvailable && 'bg-green-500',
-                        !slotsAvailable && 'bg-red-600'
-                    )}
+                <Button
+                    stylize='blue'
+                    stretch={false}
+                    className='mr-2'
+                    onClick={() => window.location.reload()}
+                >
+                    <FaSync />
+                </Button>
+                <Button
+                    anchor
+                    href='https://selfregistration.cowin.gov.in'
+                    stylize={!slotsAvailable ? 'red' : 'green'}
+                    stretch={false}
                 >
                     <FaSyringe className='mr-2' /> Open Cowin
-                </a>
+                </Button>
             </div>
             {!hasAlerts && (
                 <div className='text-center h-36 flex items-center justify-center'>

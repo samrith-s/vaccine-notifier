@@ -49,7 +49,7 @@ export function AlertCard({ alert }: AlertCardProps) {
             )}
         >
             <div
-                className='grid items-center relative p-4'
+                className='grid items-center relative p-4 pt-5'
                 style={{ gridTemplateColumns: 'max-content auto max-content' }}
             >
                 <span
