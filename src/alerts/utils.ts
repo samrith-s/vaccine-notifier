@@ -1,4 +1,4 @@
-import { Alert, AlertMethods, AlertWorkerMethods, Center, CenterData } from '../interface';
+import { Alert, AlertMethods, AlertWorkerMethods, Center, CenterData, Session } from '../interface';
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -32,10 +32,13 @@ export function Notify(body: string) {
     }
 }
 
-export function filterSlots(alert: Alert, centerData: CenterData): Center[] {
-    return centerData.centers.filter((center) =>
-        center.sessions.some(
-            (session) => session.min_age_limit <= alert.category && session.available_capacity
-        )
-    );
+export function filterSlots(alert: Alert, centerData: CenterData): Center[] | Session[] {
+    const conditional = (session: Session) =>
+        session.min_age_limit <= alert.category && session.available_capacity;
+
+    if (centerData.sessions) {
+        return centerData.sessions.filter(conditional);
+    }
+
+    return centerData.centers?.filter((center) => center.sessions.some(conditional));
 }

@@ -1,3 +1,3 @@
-export function classNames(...args: (string | boolean)[]): string {
+export function classNames(...args: (string | boolean | undefined | null)[]): string {
     return args.filter((o) => o).join(' ');
 }

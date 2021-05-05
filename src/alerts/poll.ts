@@ -1,11 +1,13 @@
 import { Alert } from '../interface';
 
 import { fetchAlert } from './fetch';
-import { SendCounter, SendData } from './messaging';
+import { SendData } from './messaging';
 import { getAlerts } from './storage';
 
+declare const self: ServiceWorkerGlobalScope;
+
 export async function PollAlert() {
-    let timeout = 0;
+    let timeout: number;
 
     async function Poller() {
         const alerts: Alert[] = await getAlerts();
@@ -16,14 +18,13 @@ export async function PollAlert() {
 
         const newAlerts = await getAlerts();
         SendData('alerts::poll', newAlerts);
-        SendCounter(Date.now());
 
-        clearTimeout(timeout);
+        self.clearTimeout(timeout);
 
-        timeout = (setTimeout(async () => {
-            await Poller();
-        }, 20000) as unknown) as number;
+        timeout = self.setTimeout(async () => {
+            Poller();
+        }, 20000);
     }
 
-    return await Poller();
+    return Poller();
 }

@@ -13,6 +13,7 @@ interface AlertsProviderProps {
 export function AlertsProvider({ children }: AlertsProviderProps) {
     const { init } = useAlertWorker();
     const [alerts, setAlerts] = useState<Alert[]>([]);
+    const [updatedAt, setUpdatedAt] = useState<Date>();
 
     useEffect(() => {
         init();
@@ -25,7 +26,6 @@ export function AlertsProvider({ children }: AlertsProviderProps) {
             const data = event.data;
 
             switch (key) {
-                case 'alerts::init':
                 case 'alerts::poll': {
                     setAlerts(data as Alert[]);
                     break;
@@ -58,6 +58,8 @@ export function AlertsProvider({ children }: AlertsProviderProps) {
                 }
             }
 
+            setUpdatedAt(new Date());
+
             return true;
         };
 
@@ -74,11 +76,12 @@ export function AlertsProvider({ children }: AlertsProviderProps) {
 
     const contextData = useMemo(
         () => ({
+            updatedAt,
             slotsAvailable,
             alerts,
             hasAlerts,
         }),
-        [slotsAvailable, alerts, hasAlerts]
+        [slotsAvailable, alerts, hasAlerts, updatedAt]
     );
 
     return <AlertsContext.Provider value={contextData}>{children}</AlertsContext.Provider>;

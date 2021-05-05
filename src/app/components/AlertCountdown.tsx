@@ -1,27 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import d from 'dayjs';
 
-import { CounterChannel } from '../../alerts/channels';
+import { useAlerts } from '../hooks/useAlerts';
 
 export function AlertCountdown() {
-    const [updatedAt, setUpdatedAt] = useState(0);
-
-    useEffect(() => {
-        const listener = (date: any) => {
-            setUpdatedAt(date);
-            return true;
-        };
-
-        CounterChannel.addEventListener('message', listener);
-
-        return () => {
-            CounterChannel.removeEventListener('message', listener);
-        };
-    });
+    const { updatedAt } = useAlerts();
 
     return (
-        <div className='text-gray-500'>
-            {!!updatedAt && <>Last updated at {d(updatedAt).format('DD-MM-YYYY [at] h:mma')}</>}
+        <div className='text-gray-500 text-sm'>
+            Last updated at {d(updatedAt).format('DD-MM-YYYY [at] h:mma')}
         </div>
     );
 }
