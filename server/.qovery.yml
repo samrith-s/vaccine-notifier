@@ -1,0 +1,15 @@
+---
+application:
+    name: 'vaccine-notifier'
+    project: 'vaccine-notifier'
+    organization: 'QoveryCommunity'
+databases:
+    - type: 'POSTGRESQL'
+      name: 'vaccine-notifier-prod'
+      version: '12'
+routers:
+    - name: 'main-vaccine-notifier'
+      routes:
+          - application_name: 'vaccine-notifier'
+            paths:
+                - '/*'
